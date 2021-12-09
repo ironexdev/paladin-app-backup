@@ -18,7 +18,7 @@ if ($_ENV["FORCE_HTTPS"] === "true") {
     }
 }
 
-const APP_DIRECTORY = __DIR__;
+const DEVSTACK_DIRECTORY = __DIR__;
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "vendor" . DIRECTORY_SEPARATOR . "autoload.php";
 

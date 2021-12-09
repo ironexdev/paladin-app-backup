@@ -127,13 +127,13 @@ return [
         $client = new Client($uri, [], ["typeMap" => DocumentManager::CLIENT_TYPEMAP]);
         $config = new Configuration();
 
-        $modelDirectory = APP_DIRECTORY . DS . "Model";
+        $modelDirectory = DEVSTACK_DIRECTORY . DS . "Model";
         $config->setProxyDir(
-            APP_DIRECTORY . DS . ".." . DS . "var" . DS . "doctrine" . DS . "proxy"
+            DEVSTACK_DIRECTORY . DS . ".." . DS . "var" . DS . "doctrine" . DS . "proxy"
         );
         $config->setProxyNamespace("PaladinBackend\\Model\\Proxy");
         $config->setHydratorDir(
-            APP_DIRECTORY . DS . ".." . DS . "var" . DS . "doctrine" . DS . "hydrator"
+            DEVSTACK_DIRECTORY . DS . ".." . DS . "var" . DS . "doctrine" . DS . "hydrator"
         );
         $config->setHydratorNamespace("PaladinBackend\\Model\\Hydrator");
         $config->setDefaultDB($_ENV["MONGO_INITDB_DATABASE"]);
@@ -173,7 +173,7 @@ return [
     }),
     ResponseFactoryInterface::class => DI\create(Psr17Factory::class),
     Router::class => DI\factory(function (Container $container, ResponseFactoryInterface $responseFactory) {
-        $routes = require_once(APP_DIRECTORY . DS . ".." . DS . "config" . DS . "api" . DS . "base" . DS . "routes.php");
+        $routes = require_once(DEVSTACK_DIRECTORY . DS . ".." . DS . "config" . DS . "api" . DS . "base" . DS . "routes.php");
         return new Router($container, $responseFactory, $routes);
     }),
     ServerRequestInterface::class => DI\factory(function (ClientInterface $httpClient, Psr17Factory $psr17Factory) {
@@ -190,7 +190,7 @@ return [
     TranslatorInterface::class => DI\Factory(function (JsonFileLoader $jsonFileLoader) {
         $translator = new Translator($_ENV["DEFAULT_LOCALE"]);
         $translator->addLoader("json", $jsonFileLoader);
-        $translator->addResource("json", APP_DIRECTORY . DS . ".." . DS . "translations" . DS . "messages+intl-icu.en_US.json", "en_US", "messages+intl-icu");
+        $translator->addResource("json", DEVSTACK_DIRECTORY . DS . ".." . DS . "translations" . DS . "messages+intl-icu.en_US.json", "en_US", "messages+intl-icu");
 
         return $translator;
     }),
