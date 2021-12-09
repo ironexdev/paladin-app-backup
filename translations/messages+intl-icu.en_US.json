@@ -1,0 +1,8 @@
+{
+  "num_of_apples" : "{count, plural, one {There is one apple...} other {There are # apples!}}",
+  "invalid_email_or_password": "Your e-mail and/or password don't match.",
+  "invalid_email_format": "Please enter your email address in format: yourname@example.com",
+  "invalid_password_format": "Please use lowercase letters, uppercase letters and numbers.",
+  "string_min_length": "{count, plural, one {Please enter at least one character.} other {Please enter at least # characters.}}",
+  "string_max_length": "{count, plural, one {Please don't enter more than one character.} other {Please don't enter more than # characters.}}"
+}
