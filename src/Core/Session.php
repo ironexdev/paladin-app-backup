@@ -11,23 +11,12 @@ class Session
     private static string $userId = "user_id";
     private static string $secureLogin = "secure_login";
 
-    /**
-     *  TODO move everything except cookie_secure (and maybe save_path) to php.ini
-     */
     public static function start()
     {
-        ini_set("session.name", "PALADIN");
-        ini_set("session.cookie_path", "/");
-        ini_set("session.cookie_httponly", true);
-        ini_set("session.use_only_cookies", true);
-        ini_set("session.use_strict_mode", true);
-        ini_set("session.use_trans_sid", false);
-        ini_set("session.cookie_secure", $_ENV["ENVIRONMENT"] !== EnvironmentEnum::DEVELOPMENT);
-        ini_set("session.cookie_lifetime", 60);
-        ini_set("session.gc_maxlifetime", 0);
-        ini_set("session.gc_probability", 0);
-        ini_set("session.gc_divisor", 0);
-        ini_set("session.save_path", "/home/dockeruser/backend/sessions");
+        if ($_ENV["ENVIRONMENT"] === EnvironmentEnum::DEVELOPMENT) {
+            ini_set("session.cookie_secure", "off");
+        }
+
         session_start();
     }
 

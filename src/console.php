@@ -24,7 +24,7 @@ if ($_ENV["ERROR_REPORTING"] === "true") {
     ini_set("display_errors", "On");
 }
 
-const DEVSTACK_DIRECTORY = __DIR__;
+const APP_DIRECTORY = __DIR__;
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "vendor" . DIRECTORY_SEPARATOR . "autoload.php";
 

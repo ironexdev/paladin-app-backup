@@ -46,7 +46,7 @@ const DS = DIRECTORY_SEPARATOR;
 return [
     CacheInterface::class => DI\factory(function () {
         $client = new Redis();
-        $client->connect("redis", 6379);
+        $client->connect($_ENV["REDIS_HOST"], $_ENV["REDIS_PORT"]);
         return new RedisCachePool($client);
     }),
     ClientInterface::class => DI\create(GuzzleHttp\Client::class),
@@ -127,14 +127,10 @@ return [
         $client = new Client($uri, [], ["typeMap" => DocumentManager::CLIENT_TYPEMAP]);
         $config = new Configuration();
 
-        $modelDirectory = DEVSTACK_DIRECTORY . DS . "Model";
-        $config->setProxyDir(
-            DEVSTACK_DIRECTORY . DS . ".." . DS . "var" . DS . "doctrine" . DS . "proxy"
-        );
+        $modelDirectory = APP_DIRECTORY . DS . "Model";
+        $config->setProxyDir(APP_DIRECTORY . DS . ".." . DS . "generated" . DS . "doctrine" . DS . "proxy");
         $config->setProxyNamespace("PaladinBackend\\Model\\Proxy");
-        $config->setHydratorDir(
-            DEVSTACK_DIRECTORY . DS . ".." . DS . "var" . DS . "doctrine" . DS . "hydrator"
-        );
+        $config->setHydratorDir(APP_DIRECTORY . DS . ".." . DS . "generated" . DS . "doctrine" . DS . "hydrator");
         $config->setHydratorNamespace("PaladinBackend\\Model\\Hydrator");
         $config->setDefaultDB($_ENV["MONGO_INITDB_DATABASE"]);
         $config->setMetadataDriverImpl(AnnotationDriver::create($modelDirectory . DS . "Document"));
@@ -173,7 +169,7 @@ return [
     }),
     ResponseFactoryInterface::class => DI\create(Psr17Factory::class),
     Router::class => DI\factory(function (Container $container, ResponseFactoryInterface $responseFactory) {
-        $routes = require_once(DEVSTACK_DIRECTORY . DS . ".." . DS . "config" . DS . "api" . DS . "base" . DS . "routes.php");
+        $routes = require_once(APP_DIRECTORY . DS . ".." . DS . "config" . DS . "api" . DS . "base" . DS . "routes.php");
         return new Router($container, $responseFactory, $routes);
     }),
     ServerRequestInterface::class => DI\factory(function (ClientInterface $httpClient, Psr17Factory $psr17Factory) {
@@ -190,7 +186,7 @@ return [
     TranslatorInterface::class => DI\Factory(function (JsonFileLoader $jsonFileLoader) {
         $translator = new Translator($_ENV["DEFAULT_LOCALE"]);
         $translator->addLoader("json", $jsonFileLoader);
-        $translator->addResource("json", DEVSTACK_DIRECTORY . DS . ".." . DS . "translations" . DS . "messages+intl-icu.en_US.json", "en_US", "messages+intl-icu");
+        $translator->addResource("json", APP_DIRECTORY . DS . ".." . DS . "translations" . DS . "messages+intl-icu.en_US.json", "en_US", "messages+intl-icu");
 
         return $translator;
     }),
