@@ -38,7 +38,7 @@ class Kernel
         Session::start();
         Session::regenerate();
 
-        // TODO enable $this->validateCsrfToken($serverRequest, $securityService);
+        $this->validateCsrfToken($serverRequest, $securityService);
 
         $response = $this->processRequest($corsMiddleware, $graphQLMiddleware, $defaultResponse, $router, $serverRequest);
 
