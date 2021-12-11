@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace PaladinBackend\Enum;
+namespace Paladin\Enum;
 
 use MyCLabs\Enum\Enum;
 

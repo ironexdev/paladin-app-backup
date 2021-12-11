@@ -1,8 +1,8 @@
 <?php
 
-namespace PaladinBackend\Core;
+namespace Paladin\Core;
 
-use PaladinBackend\Model\Document\User;
+use Paladin\Model\Document\User;
 
 class CurrentUserService
 {

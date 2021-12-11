@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Cache\RedisCache;
+namespace Paladin\Cache\RedisCache;
 
 use Symfony\Component\Cache\Psr16Cache;
 

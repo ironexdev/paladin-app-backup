@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Core;
+namespace Paladin\Core;
 
 use DI\Container;
 use Psr\Http\Message\ResponseFactoryInterface;

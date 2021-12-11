@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Api\GraphQL\Controller;
+namespace Paladin\Api\GraphQL\Controller;
 
 use TheCodingMachine\GraphQLite\Annotations\Query;
 

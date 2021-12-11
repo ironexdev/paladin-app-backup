@@ -1,11 +1,11 @@
 <?php
 
-namespace PaladinBackend\Api\GraphQL\Controller;
+namespace Paladin\Api\GraphQL\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TheCodingMachine\GraphQLite\Validator\ValidationFailedException;
-use PaladinBackend\Api\GraphQL\Input\Type\AbstractInput;
+use Paladin\Api\GraphQL\Input\Type\AbstractInput;
 
 class AbstractController
 {

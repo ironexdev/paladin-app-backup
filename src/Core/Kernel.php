@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Core;
+namespace Paladin\Core;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Error;
@@ -9,12 +9,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use TheCodingMachine\GraphQLite\Http\WebonyxGraphqlMiddleware;
 use Tuupola\Middleware\CorsMiddleware;
-use PaladinBackend\Enum\RequestHeaderEnum;
-use PaladinBackend\Enum\RequestMethodEnum;
-use PaladinBackend\Enum\ResponseHeaderEnum;
-use PaladinBackend\Enum\ResponseStatusCodeEnum;
-use PaladinBackend\Security\SecurityService;
-use PaladinBackend\Security\SecurityServiceInterface;
+use Paladin\Enum\RequestHeaderEnum;
+use Paladin\Enum\RequestMethodEnum;
+use Paladin\Enum\ResponseHeaderEnum;
+use Paladin\Enum\ResponseStatusCodeEnum;
+use Paladin\Security\SecurityService;
+use Paladin\Security\SecurityServiceInterface;
 
 class Kernel
 {

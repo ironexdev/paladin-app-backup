@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Cache\FilesystemCache;
+namespace Paladin\Cache\FilesystemCache;
 
 use Symfony\Component\Cache\Psr16Cache;
 

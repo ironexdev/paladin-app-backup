@@ -1,19 +1,19 @@
 <?php
 
-namespace PaladinBackend\Api\Base;
+namespace Paladin\Api\Base;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\MongoDBException;
 use Error;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use PaladinBackend\Enum\ResponseStatusCodeEnum;
-use PaladinBackend\Enum\TranslatorEnum;
-use PaladinBackend\Core\Cookie;
-use PaladinBackend\Core\Session;
-use PaladinBackend\Model\Document\User;
-use PaladinBackend\Model\DocumentFactory\AuthenticationTokenFactory;
-use PaladinBackend\Security\SecurityService;
+use Paladin\Enum\ResponseStatusCodeEnum;
+use Paladin\Enum\TranslatorEnum;
+use Paladin\Core\Cookie;
+use Paladin\Core\Session;
+use Paladin\Model\Document\User;
+use Paladin\Model\DocumentFactory\AuthenticationTokenFactory;
+use Paladin\Security\SecurityService;
 
 class LoginController extends AbstractController
 {

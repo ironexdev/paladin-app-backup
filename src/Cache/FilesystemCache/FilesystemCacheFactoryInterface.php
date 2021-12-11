@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Cache\FilesystemCache;
+namespace Paladin\Cache\FilesystemCache;
 
 interface FilesystemCacheFactoryInterface
 {

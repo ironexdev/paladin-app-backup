@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Model\Document;
+namespace Paladin\Model\Document;
 
 use DateTime;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;

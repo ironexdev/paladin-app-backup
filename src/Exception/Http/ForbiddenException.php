@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace PaladinBackend\Exception\Http;
+namespace Paladin\Exception\Http;
 
 class ForbiddenException extends AbstractHttpClientException
 {

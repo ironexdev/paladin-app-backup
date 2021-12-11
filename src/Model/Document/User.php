@@ -1,16 +1,16 @@
 <?php
 
-namespace PaladinBackend\Model\Document;
+namespace Paladin\Model\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
-use PaladinBackend\Model\Document\DocumentTrait\ActiveTrait;
-use PaladinBackend\Model\Document\DocumentTrait\CreatedTrait;
-use PaladinBackend\Model\Document\DocumentTrait\UpdatedTrait;
+use Paladin\Model\Document\DocumentTrait\ActiveTrait;
+use Paladin\Model\Document\DocumentTrait\CreatedTrait;
+use Paladin\Model\Document\DocumentTrait\UpdatedTrait;
 
 /**
- * @ODM\Document(repositoryClass="PaladinBackend\Model\Repository\UserRepository")
+ * @ODM\Document(repositoryClass="Paladin\Model\Repository\UserRepository")
  * @ODM\HasLifecycleCallbacks
  */
 #[Type]

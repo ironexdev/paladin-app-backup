@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Security;
+namespace Paladin\Security;
 
 interface SecurityServiceInterface
 {

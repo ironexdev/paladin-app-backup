@@ -1,8 +1,8 @@
 <?php
 
-namespace PaladinBackend\Api\GraphQL\Input\Factory;
+namespace Paladin\Api\GraphQL\Input\Factory;
 
-use PaladinBackend\Api\GraphQL\Input\Type\UserInput;
+use Paladin\Api\GraphQL\Input\Type\UserInput;
 
 class UserInputFactory
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace PaladinBackend\Core;
+namespace Paladin\Core;
 
 use DateTimeImmutable;
 use DateTimeZone;
 use Error;
 use Exception;
-use PaladinBackend\Enum\ResponseStatusCodeEnum;
+use Paladin\Enum\ResponseStatusCodeEnum;
 
 class Utils
 {

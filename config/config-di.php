@@ -3,10 +3,10 @@
 use DI\Container;
 use GuzzleHttp\ClientInterface;
 use Monolog\Formatter\JsonFormatter;
-use PaladinBackend\Cache\FilesystemCache\FilesystemCacheFactory;
-use PaladinBackend\Cache\FilesystemCache\FilesystemCacheFactoryInterface;
-use PaladinBackend\Cache\RedisCache\RedisCacheFactory;
-use PaladinBackend\Cache\RedisCache\RedisCacheFactoryInterface;
+use Paladin\Cache\FilesystemCache\FilesystemCacheFactory;
+use Paladin\Cache\FilesystemCache\FilesystemCacheFactoryInterface;
+use Paladin\Cache\RedisCache\RedisCacheFactory;
+use Paladin\Cache\RedisCache\RedisCacheFactoryInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -20,17 +20,17 @@ use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Tuupola\Middleware\CorsMiddleware;
-use PaladinBackend\Enum\EnvironmentEnum;
-use PaladinBackend\Enum\RequestMethodEnum;
-use PaladinBackend\Core\Cookie;
-use PaladinBackend\Core\Router;
-use PaladinBackend\Core\CurrentUserService;
-use PaladinBackend\Core\Session;
-use PaladinBackend\Enum\ResponseHeaderEnum;
-use PaladinBackend\Model\Document\AuthenticationToken;
-use PaladinBackend\Model\Document\User;
-use PaladinBackend\Security\SecurityService;
-use PaladinBackend\Security\SecurityServiceInterface;
+use Paladin\Enum\EnvironmentEnum;
+use Paladin\Enum\RequestMethodEnum;
+use Paladin\Core\Cookie;
+use Paladin\Core\Router;
+use Paladin\Core\CurrentUserService;
+use Paladin\Core\Session;
+use Paladin\Enum\ResponseHeaderEnum;
+use Paladin\Model\Document\AuthenticationToken;
+use Paladin\Model\Document\User;
+use Paladin\Security\SecurityService;
+use Paladin\Security\SecurityServiceInterface;
 use Doctrine\ODM\MongoDB\Configuration;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
@@ -100,7 +100,7 @@ return [
 
         if (isset($user)) {
             Session::setUserId($userId);
-            Session::setSecureLogin(false); // True if user is logged in via session, false if user is logged in via cookie
+            Session::setSecureLogin(false); // False because user is now logged in via cookie
 
             return new CurrentUserService($user);
         } else {
@@ -194,9 +194,9 @@ return [
 
         $modelDirectory = APP_DIRECTORY . DS . "Model";
         $config->setProxyDir(APP_DIRECTORY . DS . ".." . DS . "var" . DS . "cache" . DS . "doctrine" . DS . "proxy");
-        $config->setProxyNamespace("PaladinBackend\\Model\\Proxy");
+        $config->setProxyNamespace("Paladin\\Model\\Proxy");
         $config->setHydratorDir(APP_DIRECTORY . DS . ".." . DS . "var" . DS . "cache" . DS . "doctrine" . DS . "hydrator");
-        $config->setHydratorNamespace("PaladinBackend\\Model\\Hydrator");
+        $config->setHydratorNamespace("Paladin\\Model\\Hydrator");
         $config->setDefaultDB($_ENV["MONGO_INITDB_DATABASE"]);
         $config->setMetadataDriverImpl(AnnotationDriver::create($modelDirectory . DS . "Document"));
 
@@ -243,9 +243,9 @@ return [
     WebonyxGraphqlMiddleware::class => DI\factory(function (FilesystemCacheFactoryInterface $filesystemCacheFactory, ContainerInterface $container, Psr17Factory $psr17Factory) {
         $filesystemCache = $filesystemCacheFactory->create("graphql");
         $schemaFactory = new SchemaFactory($filesystemCache, $container);
-        $schemaFactory->addControllerNamespace("PaladinBackend\\Api\\GraphQL\\Controller\\")
-            ->addTypeNamespace("PaladinBackend\\Model\\Document\\")
-            ->addTypeNamespace("PaladinBackend\\Api\\GraphQL\\Input\\Type");
+        $schemaFactory->addControllerNamespace("Paladin\\Api\\GraphQL\\Controller\\")
+            ->addTypeNamespace("Paladin\\Model\\Document\\")
+            ->addTypeNamespace("Paladin\\Api\\GraphQL\\Input\\Type");
 
         $schema = $schemaFactory->createSchema();
 

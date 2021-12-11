@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
 
-use PaladinBackend\Command\ExampleCommand;
+use Paladin\Command\ExampleCommand;
 use DI\ContainerBuilder;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Tools\Console\Command\ClearCache\MetadataCommand;
@@ -15,9 +15,9 @@ use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\UpdateCommand;
 use Doctrine\ODM\MongoDB\Tools\Console\Helper\DocumentManagerHelper;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\HelperSet;
-use PaladinBackend\Command\ODM\Seed\AuthenticationTokenSeedCommand;
-use PaladinBackend\Command\ODM\Seed\SeedCommand;
-use PaladinBackend\Command\ODM\Seed\UserSeedCommand;
+use Paladin\Command\ODM\Seed\AuthenticationTokenSeedCommand;
+use Paladin\Command\ODM\Seed\SeedCommand;
+use Paladin\Command\ODM\Seed\UserSeedCommand;
 
 if ($_ENV["ERROR_REPORTING"] === "true") {
     error_reporting(E_ALL);

@@ -1,12 +1,12 @@
 <?php
 
-namespace PaladinBackend\Api\Base;
+namespace Paladin\Api\Base;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use PaladinBackend\Enum\ResponseStatusCodeEnum;
+use Paladin\Enum\ResponseStatusCodeEnum;
 
 abstract class AbstractController
 {

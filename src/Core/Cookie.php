@@ -1,8 +1,8 @@
 <?php
 
-namespace PaladinBackend\Core;
+namespace Paladin\Core;
 
-use PaladinBackend\Enum\DateTimeEnum;
+use Paladin\Enum\DateTimeEnum;
 
 class Cookie
 {

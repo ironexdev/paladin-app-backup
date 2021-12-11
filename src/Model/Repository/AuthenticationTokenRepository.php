@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Model\Repository;
+namespace Paladin\Model\Repository;
 
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 

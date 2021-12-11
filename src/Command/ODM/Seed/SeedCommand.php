@@ -1,13 +1,13 @@
 <?php
 
-namespace PaladinBackend\Command\ODM\Seed;
+namespace Paladin\Command\ODM\Seed;
 
 use Error;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use PaladinBackend\Enum\ResponseStatusCodeEnum;
+use Paladin\Enum\ResponseStatusCodeEnum;
 
 class SeedCommand extends Command
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace PaladinBackend\Security;
+namespace Paladin\Security;
 
 use Error;
 use Exception;
 use Firebase\JWT\JWT;
-use PaladinBackend\Enum\ResponseStatusCodeEnum;
+use Paladin\Enum\ResponseStatusCodeEnum;
 
 class SecurityService implements SecurityServiceInterface
 {

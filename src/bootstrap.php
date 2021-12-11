@@ -1,10 +1,9 @@
 <?php
 
 use Psr\Log\LoggerInterface;
-use PaladinBackend\Enum\EnvironmentEnum;
-use PaladinBackend\Core\Kernel;
+use Paladin\Enum\EnvironmentEnum;
+use Paladin\Core\Kernel;
 use DI\ContainerBuilder;
-use PaladinBackend\Core\Session;
 
 if ($_ENV["ERROR_REPORTING"] === "true") {
     error_reporting(E_ALL);
@@ -52,8 +51,12 @@ try {
         header("Access-Control-Allow-Origin: " . $_ENV["CLIENT_URL"]);
         header("Access-Control-Allow-Headers: X-CSRF-Token");
 
-        http_response_code($errorCode);
-        throw $e;
+        if ($errorCode >= 400 && $errorCode < 500) {
+            http_response_code($errorCode);
+            echo $e->getMessage();
+        } else {
+            throw $e;
+        }
     } else {
         if ($errorCode >= 400 && $errorCode < 500) {
             http_response_code($errorCode);

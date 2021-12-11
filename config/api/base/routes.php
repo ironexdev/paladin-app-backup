@@ -1,10 +1,10 @@
 <?php
 
-use PaladinBackend\Api\Base\CsrfController;
-use PaladinBackend\Api\Base\IndexController;
-use PaladinBackend\Api\Base\LoginController;
-use PaladinBackend\Api\Base\LogoutController;
-use PaladinBackend\Enum\RequestMethodEnum;
+use Paladin\Api\Base\CsrfController;
+use Paladin\Api\Base\IndexController;
+use Paladin\Api\Base\LoginController;
+use Paladin\Api\Base\LogoutController;
+use Paladin\Enum\RequestMethodEnum;
 
 return [
     "/" => [

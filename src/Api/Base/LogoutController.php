@@ -1,11 +1,11 @@
 <?php
 
-namespace PaladinBackend\Api\Base;
+namespace Paladin\Api\Base;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use PaladinBackend\Core\Cookie;
-use PaladinBackend\Core\Session;
+use Paladin\Core\Cookie;
+use Paladin\Core\Session;
 
 class LogoutController extends AbstractController
 {

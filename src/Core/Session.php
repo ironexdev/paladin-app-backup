@@ -1,8 +1,8 @@
 <?php
 
-namespace PaladinBackend\Core;
+namespace Paladin\Core;
 
-use PaladinBackend\Enum\EnvironmentEnum;
+use Paladin\Enum\EnvironmentEnum;
 
 class Session
 {

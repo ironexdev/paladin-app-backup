@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Command\ODM\Seed;
+namespace Paladin\Command\ODM\Seed;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\MongoDBException;
@@ -8,10 +8,10 @@ use Error;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use PaladinBackend\Enum\ResponseStatusCodeEnum;
-use PaladinBackend\Model\Document\AuthenticationToken;
-use PaladinBackend\Model\Document\User;
-use PaladinBackend\Security\SecurityServiceInterface;
+use Paladin\Enum\ResponseStatusCodeEnum;
+use Paladin\Model\Document\AuthenticationToken;
+use Paladin\Model\Document\User;
+use Paladin\Security\SecurityServiceInterface;
 
 class AuthenticationTokenSeedCommand extends Command
 {

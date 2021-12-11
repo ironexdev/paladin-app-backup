@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Core;
+namespace Paladin\Core;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

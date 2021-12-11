@@ -1,17 +1,17 @@
 <?php
 
-namespace PaladinBackend\Api\Base;
+namespace Paladin\Api\Base;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use PaladinBackend\Core\Cookie;
-use PaladinBackend\Core\CurrentUserService;
-use PaladinBackend\Core\Session;
-use PaladinBackend\Model\Document\User;
-use PaladinBackend\Model\DocumentFactory\UserFactory;
-use PaladinBackend\Model\Repository\UserRepository;
-use PaladinBackend\Security\SecurityServiceInterface;
+use Paladin\Core\Cookie;
+use Paladin\Core\CurrentUserService;
+use Paladin\Core\Session;
+use Paladin\Model\Document\User;
+use Paladin\Model\DocumentFactory\UserFactory;
+use Paladin\Model\Repository\UserRepository;
+use Paladin\Security\SecurityServiceInterface;
 
 class IndexController extends AbstractController
 {

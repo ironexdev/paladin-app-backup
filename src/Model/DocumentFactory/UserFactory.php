@@ -1,10 +1,10 @@
 <?php
 
-namespace PaladinBackend\Model\DocumentFactory;
+namespace Paladin\Model\DocumentFactory;
 
-use PaladinBackend\Api\GraphQL\Input\Type\UserInput;
-use PaladinBackend\Model\Document\User;
-use PaladinBackend\Security\SecurityServiceInterface;
+use Paladin\Api\GraphQL\Input\Type\UserInput;
+use Paladin\Model\Document\User;
+use Paladin\Security\SecurityServiceInterface;
 
 class UserFactory
 {

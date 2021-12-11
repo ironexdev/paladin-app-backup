@@ -1,9 +1,9 @@
 <?php
 
-namespace PaladinBackend\Model\DocumentFactory;
+namespace Paladin\Model\DocumentFactory;
 
-use PaladinBackend\Model\Document\AuthenticationToken;
-use PaladinBackend\Model\Document\User;
+use Paladin\Model\Document\AuthenticationToken;
+use Paladin\Model\Document\User;
 
 class AuthenticationTokenFactory
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace PaladinBackend\Api\GraphQL\Controller;
+namespace Paladin\Api\GraphQL\Controller;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\MongoDBException;
 use TheCodingMachine\GraphQLite\Annotations\Autowire;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
-use PaladinBackend\Api\GraphQL\Input\Type\UserInput;
-use PaladinBackend\Model\Document\User;
-use PaladinBackend\Model\DocumentFactory\UserFactory;
-use PaladinBackend\Model\Repository\UserRepository;
+use Paladin\Api\GraphQL\Input\Type\UserInput;
+use Paladin\Model\Document\User;
+use Paladin\Model\DocumentFactory\UserFactory;
+use Paladin\Model\Repository\UserRepository;
 
 class UserController extends AbstractController
 {

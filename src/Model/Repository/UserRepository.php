@@ -1,12 +1,12 @@
 <?php
 
-namespace PaladinBackend\Model\Repository;
+namespace Paladin\Model\Repository;
 
 use Doctrine\ODM\MongoDB\MongoDBException;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Error;
-use PaladinBackend\Enum\ResponseStatusCodeEnum;
-use PaladinBackend\Model\Document\User;
+use Paladin\Enum\ResponseStatusCodeEnum;
+use Paladin\Model\Document\User;
 
 class UserRepository extends DocumentRepository
 {

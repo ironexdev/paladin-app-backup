@@ -1,11 +1,11 @@
 <?php
 
-namespace PaladinBackend\Api\GraphQL\Input\Type;
+namespace Paladin\Api\GraphQL\Input\Type;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Input;
-use PaladinBackend\Enum\TranslatorEnum;
+use Paladin\Enum\TranslatorEnum;
 
 #[Input]
 class UserInput extends AbstractInput

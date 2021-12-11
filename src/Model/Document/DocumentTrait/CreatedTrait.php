@@ -1,6 +1,6 @@
 <?php
 
-namespace PaladinBackend\Model\Document\DocumentTrait;
+namespace Paladin\Model\Document\DocumentTrait;
 
 use DateTime;
 use DateTimeZone;
