@@ -8,7 +8,6 @@
   "require": {
     "php": "8.0.10",
     "php-di/php-di": "^6.0",
-    "swiftmailer/swiftmailer": "^6.2",
     "firebase/php-jwt": "^5.4",
     "psr/container": "1.1.1",
     "thecodingmachine/graphqlite": "5.0.1",
@@ -19,7 +18,6 @@
     "monolog/monolog": "^2.3",
     "symfony/console": "^5.3",
     "psr/http-message": "^1.0",
-    "cache/redis-adapter": "^1.1",
     "ext-redis": "*",
     "nyholm/psr7": "^1.4",
     "kriswallsmith/buzz": "^1.2",
@@ -32,7 +30,9 @@
     "ext-openssl": "*",
     "ext-mongodb": "*",
     "thecodingmachine/graphqlite-symfony-validator-bridge": "^5.0",
-    "symfony/translation": "^5.3"
+    "symfony/translation": "^5.3",
+    "symfony/mailer": "^6.0",
+    "symfony/cache": "5.4.0"
   },
   "type": "project",
   "description": ""

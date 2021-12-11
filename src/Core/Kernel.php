@@ -112,7 +112,7 @@ class Kernel
             $requestCsrfToken = $serverRequest->getHeaderLine(RequestHeaderEnum::X_CSRF_TOKEN);
 
             if (!$storedCsrfToken || !$requestCsrfToken || !$securityService->hashEquals($storedCsrfToken, $requestCsrfToken)) {
-                throw new Error("CSRF attack.", ResponseStatusCodeEnum::INTERNAL_SERVER_ERROR);
+                throw new Error("CSRF attack.", ResponseStatusCodeEnum::FORBIDDEN);
             }
         }
     }

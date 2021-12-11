@@ -3,8 +3,17 @@
 use DI\Container;
 use GuzzleHttp\ClientInterface;
 use Monolog\Formatter\JsonFormatter;
+use PaladinBackend\Cache\FilesystemCache\FilesystemCacheFactory;
+use PaladinBackend\Cache\FilesystemCache\FilesystemCacheFactoryInterface;
+use PaladinBackend\Cache\RedisCache\RedisCacheFactory;
+use PaladinBackend\Cache\RedisCache\RedisCacheFactoryInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Translation\Loader\JsonFileLoader;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\Validation;
@@ -18,13 +27,10 @@ use PaladinBackend\Core\Router;
 use PaladinBackend\Core\CurrentUserService;
 use PaladinBackend\Core\Session;
 use PaladinBackend\Enum\ResponseHeaderEnum;
-use PaladinBackend\Mailer\Mailer;
-use PaladinBackend\Mailer\MailerInterface;
 use PaladinBackend\Model\Document\AuthenticationToken;
 use PaladinBackend\Model\Document\User;
 use PaladinBackend\Security\SecurityService;
 use PaladinBackend\Security\SecurityServiceInterface;
-use Cache\Adapter\Redis\RedisCachePool;
 use Doctrine\ODM\MongoDB\Configuration;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
@@ -36,7 +42,6 @@ use Nyholm\Psr7Server\ServerRequestCreator;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
-use Psr\SimpleCache\CacheInterface;
 use TheCodingMachine\GraphQLite\Http\Psr15GraphQLMiddlewareBuilder;
 use TheCodingMachine\GraphQLite\Http\WebonyxGraphqlMiddleware;
 use TheCodingMachine\GraphQLite\SchemaFactory;
@@ -44,26 +49,8 @@ use TheCodingMachine\GraphQLite\SchemaFactory;
 const DS = DIRECTORY_SEPARATOR;
 
 return [
-    CacheInterface::class => DI\factory(function () {
-        $client = new Redis();
-        $client->connect($_ENV["REDIS_HOST"], $_ENV["REDIS_PORT"]);
-        return new RedisCachePool($client);
-    }),
-    ClientInterface::class => DI\create(GuzzleHttp\Client::class),
-    CorsMiddleware::class => DI\factory(function (LoggerInterface $logger) {
-        return new CorsMiddleware([
-            "origin" => ["*"],
-            "methods" => RequestMethodEnum::toArray(),
-            "headers.allow" => [
-                ResponseHeaderEnum::X_CSRF_TOKEN,
-                ResponseHeaderEnum::CONTENT_TYPE
-            ],
-            "headers.expose" => [],
-            "credentials" => true,
-            "cache" => 0,
-            "logger" => $logger
-        ]);
-    }),
+    /* Custom Interfaces *****************************************************/
+    /*************************************************************************/
     CurrentUserService::class => DI\factory(function (DocumentManager $documentManager, SecurityService $securityService) {
         // Attempt to get user id from Session
         $userId = Session::getUserId();
@@ -121,6 +108,84 @@ return [
             return new CurrentUserService();
         }
     }),
+
+    // Factories that create classes, which implement PSR-16
+    FilesystemCacheFactoryInterface::class => DI\factory(function () {
+        return new FilesystemCacheFactory(APP_DIRECTORY . DS . ".." . DS . "var" . DS . "cache");
+    }),
+    RedisCacheFactoryInterface::class => DI\factory(function () {
+        $client = RedisAdapter::createConnection(
+            "redis://" . $_ENV["REDIS_HOST"] . ":" . $_ENV["REDIS_PORT"]
+        );
+
+        return new RedisCacheFactory($client);
+    }),
+
+    // Implements PSR-15
+    Router::class => DI\factory(function (Container $container, ResponseFactoryInterface $responseFactory) {
+        $routes = require_once(APP_DIRECTORY . DS . ".." . DS . "config" . DS . "api" . DS . "base" . DS . "routes.php");
+        return new Router($container, $responseFactory, $routes);
+    }),
+
+    SecurityServiceInterface::class => DI\create(SecurityService::class),
+
+    // PSR interfaces ********************************************************/
+    /*************************************************************************/
+
+    // PSR-3
+    LoggerInterface::class => DI\factory(function () {
+        $logger = new Logger("debug");
+        $fileHandler = new StreamHandler($_ENV["DEBUG_LOG"], Logger::DEBUG);
+        $formatter = new JsonFormatter();
+        $formatter->includeStacktraces();
+        $fileHandler->setFormatter($formatter);
+        $logger->pushHandler($fileHandler);
+
+        return $logger;
+    }),
+
+    // PSR-7
+    ResponseInterface::class => DI\factory(function (ResponseFactoryInterface $responseFactory) {
+        return $responseFactory->createResponse();
+    }),
+    ResponseFactoryInterface::class => DI\create(Psr17Factory::class),
+
+    // PSR-15
+    ServerRequestInterface::class => DI\factory(function (ClientInterface $httpClient, Psr17Factory $psr17Factory) {
+        $creator = new ServerRequestCreator(
+            $psr17Factory,
+            $psr17Factory,
+            $psr17Factory,
+            $psr17Factory
+        );
+
+        return $creator->fromGlobals();
+    }),
+    StreamFactoryInterface::class => DI\create(Psr17Factory::class),
+
+    // 3rd party Interfaces **************************************************/
+    /*************************************************************************/
+
+    // Guzzle
+    ClientInterface::class => DI\create(GuzzleHttp\Client::class),
+
+    // Tuupola
+    CorsMiddleware::class => DI\factory(function (LoggerInterface $logger) {
+        return new CorsMiddleware([
+            "origin" => ["*"],
+            "methods" => RequestMethodEnum::toArray(),
+            "headers.allow" => [
+                ResponseHeaderEnum::X_CSRF_TOKEN,
+                ResponseHeaderEnum::CONTENT_TYPE
+            ],
+            "headers.expose" => [],
+            "credentials" => true,
+            "cache" => 0,
+            "logger" => $logger
+        ]);
+    }),
+
+    // Doctrine
     DocumentManager::class => DI\factory(function () {
         $dbPassword = file_get_contents($_ENV["MONGO_PASSWORD_FILE"]);
         $uri = "mongodb://" . $_ENV["MONGO_USER"] . ":" . $dbPassword . "@" . $_ENV["MONGO_HOST"] . ":" . $_ENV["MONGO_PORT"] . "/" . $_ENV["MONGO_INITDB_DATABASE"];
@@ -128,9 +193,9 @@ return [
         $config = new Configuration();
 
         $modelDirectory = APP_DIRECTORY . DS . "Model";
-        $config->setProxyDir(APP_DIRECTORY . DS . ".." . DS . "generated" . DS . "doctrine" . DS . "proxy");
+        $config->setProxyDir(APP_DIRECTORY . DS . ".." . DS . "var" . DS . "cache" . DS . "doctrine" . DS . "proxy");
         $config->setProxyNamespace("PaladinBackend\\Model\\Proxy");
-        $config->setHydratorDir(APP_DIRECTORY . DS . ".." . DS . "generated" . DS . "doctrine" . DS . "hydrator");
+        $config->setHydratorDir(APP_DIRECTORY . DS . ".." . DS . "var" . DS . "cache" . DS . "doctrine" . DS . "hydrator");
         $config->setHydratorNamespace("PaladinBackend\\Model\\Hydrator");
         $config->setDefaultDB($_ENV["MONGO_INITDB_DATABASE"]);
         $config->setMetadataDriverImpl(AnnotationDriver::create($modelDirectory . DS . "Document"));
@@ -148,41 +213,18 @@ return [
 
         return DocumentManager::create($client, $config);
     }),
-    SecurityServiceInterface::class => DI\create(SecurityService::class),
-    LoggerInterface::class => DI\factory(function () {
-        $logger = new Logger("debug");
-        $fileHandler = new StreamHandler($_ENV["DEBUG_LOG"], Logger::DEBUG);
-        $formatter = new JsonFormatter();
-        $formatter->includeStacktraces();
-        $fileHandler->setFormatter($formatter);
-        $logger->pushHandler($fileHandler);
 
-        return $logger;
-    }),
-    MailerInterface::class => DI\factory(function () {
-        $transport = new Swift_SmtpTransport($_ENV["MAILER_HOST"], $_ENV["MAILER_PORT"]);
-
-        return new Mailer($transport, $_ENV["MAILER_USER"], file_get_contents($_ENV["MAILER_PASSWORD"]));
-    }),
-    ResponseInterface::class => DI\factory(function (ResponseFactoryInterface $responseFactory) {
-        return $responseFactory->createResponse();
-    }),
-    ResponseFactoryInterface::class => DI\create(Psr17Factory::class),
-    Router::class => DI\factory(function (Container $container, ResponseFactoryInterface $responseFactory) {
-        $routes = require_once(APP_DIRECTORY . DS . ".." . DS . "config" . DS . "api" . DS . "base" . DS . "routes.php");
-        return new Router($container, $responseFactory, $routes);
-    }),
-    ServerRequestInterface::class => DI\factory(function (ClientInterface $httpClient, Psr17Factory $psr17Factory) {
-        $creator = new ServerRequestCreator(
-            $psr17Factory,
-            $psr17Factory,
-            $psr17Factory,
-            $psr17Factory
+    // Symfony
+    MailerInterface::class => DI\factory(function (LoggerInterface $logger) {
+        $smtpTransport = Transport::fromDsn(
+            "smtp://" . $_ENV["MAILER_USER"] . ":" . $_ENV["MAILER_PASSWORD"] . "@" . $_ENV["MAILER_HOST"] . ":" . $_ENV["MAILER_PORT"],
+            null,
+            null,
+            $logger
         );
 
-        return $creator->fromGlobals();
+        return new Mailer($smtpTransport);
     }),
-    StreamFactoryInterface::class => DI\create(Psr17Factory::class),
     TranslatorInterface::class => DI\Factory(function (JsonFileLoader $jsonFileLoader) {
         $translator = new Translator($_ENV["DEFAULT_LOCALE"]);
         $translator->addLoader("json", $jsonFileLoader);
@@ -196,7 +238,11 @@ return [
             ->setTranslator($translator)
             ->getValidator();
     }),
-    WebonyxGraphqlMiddleware::class => DI\factory(function (Psr17Factory $psr17Factory, SchemaFactory $schemaFactory) {
+
+    // TheCodingMachine, implements PSR-15
+    WebonyxGraphqlMiddleware::class => DI\factory(function (FilesystemCacheFactoryInterface $filesystemCacheFactory, ContainerInterface $container, Psr17Factory $psr17Factory) {
+        $filesystemCache = $filesystemCacheFactory->create("graphql");
+        $schemaFactory = new SchemaFactory($filesystemCache, $container);
         $schemaFactory->addControllerNamespace("PaladinBackend\\Api\\GraphQL\\Controller\\")
             ->addTypeNamespace("PaladinBackend\\Model\\Document\\")
             ->addTypeNamespace("PaladinBackend\\Api\\GraphQL\\Input\\Type");
